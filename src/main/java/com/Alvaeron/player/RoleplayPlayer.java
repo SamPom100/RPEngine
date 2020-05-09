@@ -26,6 +26,7 @@ public class RoleplayPlayer {
 	Channel channel = Channel.RP;
 	boolean OOC = false;
 	boolean online = true;
+	int isDead = 0;
 	private Engine plugin;
 
 	public RoleplayPlayer(Player pl) {
@@ -34,9 +35,9 @@ public class RoleplayPlayer {
 	}
 
 	public Player getPlayer() {
-		if(Bukkit.getPlayer(uuid) != null){
+		if (Bukkit.getPlayer(uuid) != null) {
 			return Bukkit.getPlayer(uuid);
-		}else{
+		} else {
 			return (Player) Bukkit.getOfflinePlayer(uuid);
 		}
 	}
@@ -89,17 +90,23 @@ public class RoleplayPlayer {
 
 	public void setChannel(Channel channel) {
 		if (this.channel == channel) {
-			getPlayer().sendMessage(ChatColor.YELLOW + "You are already chatting in" + ChatColor.WHITE + ": " + channel.name());
+			getPlayer().sendMessage(
+					ChatColor.YELLOW + "You are already chatting in" + ChatColor.WHITE + ": " + channel.name());
 		} else {
-			getPlayer().sendMessage(ChatColor.YELLOW + "You are now chatting in" + ChatColor.WHITE + ": " + channel.name());
+			getPlayer().sendMessage(
+					ChatColor.YELLOW + "You are now chatting in" + ChatColor.WHITE + ": " + channel.name());
 		}
 		this.channel = channel;
 	}
-	public void setOOC(boolean ooc){
+
+	public void setOOC(boolean ooc) {
 		this.OOC = ooc;
 	}
+
 	public void setTag() {
-		Engine.nametags.setNametag(getPlayer().getName(), Engine.mu.getRaceColour(race) + name.substring(0, Math.min(9, name.length())) + ChatColor.GRAY + " [", "] ");
+		Engine.nametags.setNametag(getPlayer().getName(),
+				Engine.mu.getRaceColour(race) + name.substring(0, Math.min(9, name.length())) + ChatColor.GRAY + " [",
+				"] ");
 	}
 
 	public static enum Channel {
@@ -108,8 +115,14 @@ public class RoleplayPlayer {
 
 	public static enum Gender {
 		MALE, FEMALE, NONE;
+
 		public String getName() {
-			return this == Gender.NONE ? "NONE" : Character.toString(this.name().charAt(0)).toUpperCase() + this.name().toLowerCase().substring(1);
+			return this == Gender.NONE ? "NONE"
+					: Character.toString(this.name().charAt(0)).toUpperCase() + this.name().toLowerCase().substring(1);
 		}
+	}
+
+	public int areTheyDead() {
+		return isDead;
 	}
 }
